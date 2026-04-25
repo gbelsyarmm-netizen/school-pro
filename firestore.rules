@@ -1,0 +1,43 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function hasRole(role) {
+      return isSignedIn() &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == role;
+    }
+
+    match /users/{userId} {
+      allow read: if isSignedIn() && request.auth.uid == userId;
+      allow write: if hasRole('admin');
+    }
+
+    match /students/{docId} {
+      allow read: if isSignedIn();
+      allow write: if hasRole('admin') || hasRole('teacher');
+    }
+
+    match /results/{docId} {
+      allow read: if isSignedIn();
+      allow write: if hasRole('admin') || hasRole('teacher');
+    }
+
+    match /attendance/{docId} {
+      allow read: if isSignedIn();
+      allow write: if hasRole('admin') || hasRole('teacher');
+    }
+
+    match /admissions/{docId} {
+      allow create: if true;
+      allow read, update: if hasRole('admin') || hasRole('teacher');
+    }
+
+    match /notices/{docId} {
+      allow read: if true;
+      allow write: if hasRole('admin');
+    }
+  }
+}

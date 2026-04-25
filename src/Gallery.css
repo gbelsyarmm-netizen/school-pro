@@ -1,0 +1,121 @@
+/* Instagram Style Digital Gallery */
+
+.gallery-container {
+  display: grid;
+  gap: 2px; /* Very small gap like Instagram */
+  padding: 0;
+  perspective: none;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (min-width: 640px) {
+  .gallery-container { gap: 4px; }
+}
+@media (min-width: 1024px) {
+  .gallery-container { grid-template-columns: repeat(4, 1fr); gap: 6px; }
+}
+@media (min-width: 1280px) {
+  .gallery-container { grid-template-columns: repeat(5, 1fr); gap: 8px; }
+}
+
+/* Square Card */
+.album-card-wrapper {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  cursor: pointer;
+  background: #f1f5f9;
+}
+
+.dark .album-card-wrapper {
+  background: #1e293b;
+}
+
+.album-card-3d {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  border: none;
+  background: transparent;
+}
+
+.album-card-3d::before,
+.album-card-3d::after {
+  display: none;
+}
+
+.album-thumbnail-3d {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0; left: 0;
+  padding-top: 0;
+  box-shadow: none;
+  transform: none;
+  border-radius: 0;
+}
+
+.album-thumbnail-3d img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.album-card-wrapper:hover .album-thumbnail-3d img {
+  transform: scale(1.05); /* Subtle zoom on hover */
+}
+
+/* Glassmorphism Info Overlay over Image */
+.album-info-glass {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(0deg, rgba(0,0,0,0.8), transparent);
+  margin-top: 0;
+  padding: 12px;
+  transform: none;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.album-title-3d {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: white; /* Always white over gradient */
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.album-meta-3d {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.view-album-btn {
+  display: none; /* Hide for true Instagram style */
+}
+
+/* Dark Mode Overrides */
+.dark .album-card-3d {
+  background: transparent;
+  border-color: transparent;
+}
+.dark .album-title-3d { color: white; }
+.dark .album-meta-3d { color: rgba(255, 255, 255, 0.8); }
+
+/* Transitions for Album View */
+.album-view-header {
+  transform-style: flat;
+  perspective: none;
+}
